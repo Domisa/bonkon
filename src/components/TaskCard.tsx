@@ -5,6 +5,19 @@ interface TaskCardProps {
     task: Task
 }
 
+function getDueDateLabel(dueDate:  string | null): { text: string; color: string } | null {
+    if (!dueDate) return null
+
+    const due = new Date(dueDate)
+    const now = new Date()
+    const diffMs = due.getTime() - now.getTime()
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24 ))
+
+    if (diffDays < 0 ) return { text: 'Overdue', color: '#dc2626' }
+    if (diffDays <= 2) return { text: 'Due soon', color: '#d97706'}
+    return { text: due.toLocaleDateString(), color: '#6b7280'}
+}
+
 function TaskCard({ task }: TaskCardProps) {
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
         id: task.id,
@@ -24,9 +37,21 @@ function TaskCard({ task }: TaskCardProps) {
             : {}),
     }
 
+    const dueLabel = getDueDateLabel(task.due_date)
+
     return (
         <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
             {task.title}
+            {task.description && (
+                <div style={{ fontSize: '0.85rem', color: '#4b5563', marginTop: '0.25rem' }}>
+                    {task.description}
+                </div>
+            )}
+            {dueLabel && (
+                <div style={{ fontSize: '0.75rem', color: dueLabel.color, marginTop: '0.25rem' }}>
+                    {dueLabel.text}
+                </div>
+            )}
             </div>
     )
 }
