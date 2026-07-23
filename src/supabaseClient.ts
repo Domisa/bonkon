@@ -42,3 +42,20 @@ export async function updateTaskStatus(taskId: string, newStatus: string) {
         throw error
     }
 }
+
+export async function createTask(title: string, status: string) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No authenticated user')
+
+        const { data, error } = await supabase
+            .from('tasks')
+            .insert({ title, status, user_id: user.id })
+            .select()
+            .single()
+    
+    if (error) {
+        console.error('Failed to create task:', error.message)
+        throw error
+    }
+    return data as Task
+}
