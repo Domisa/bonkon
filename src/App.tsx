@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ensureGuestSession, fetchTasks } from './supabaseClient'
-import type { task } from './types'
+import type { Task } from './types'
 
 function App() {
   const [tasks, setTasks] =  useState<Task[]>([])
@@ -8,6 +8,7 @@ function App() {
 
   useEffect(() => {
     async function init() {
+      console.log('init running')
       await ensureGuestSession()
       const data = await fetchTasks()
       setTasks(data)
@@ -15,13 +16,16 @@ function App() {
     }
     init()
   }, [])
-}
+
 
   if (loading) return <div>Loading...</div>
 
   return (
     <div>
       <h1>Konbon Board</h1>
-      <pre>{JSON.stringify(TaskSignal, null, 2)}</pre>
+      <pre>{JSON.stringify(tasks, null, 2)}</pre>
     </div>
   )
+}
+
+export default App
