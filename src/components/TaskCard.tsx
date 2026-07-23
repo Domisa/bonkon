@@ -10,19 +10,20 @@ function TaskCard({ task }: TaskCardProps) {
         id: task.id,
     })
 
-    const style = transform
-        ? { transform: 'translate(${transform.x}px, ${transform.y}px)' }
-        : undefined
+    const style = {
+        background: 'white',
+        padding: '0.75rem',
+        marginBottom: '0.5rem',
+        borderRadius: '6px',
+        cursor: 'grab',
+        ...(transform
+            ? {transform: 'translate(${transform.x}px, ${transform.y}px)' }
+            : {}),
+    }
 
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...listeners}
-            {...attributes}
-            className="bg-white p-3 mb-2 rounded-md shadow-sm cursor-grab"
-            >
-                {task.title}
+        <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+            {task.title}
             </div>
     )
 }
