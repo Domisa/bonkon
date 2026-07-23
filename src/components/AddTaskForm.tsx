@@ -10,6 +10,8 @@ const STATUSES = ['To Do', 'In Progress', 'In Review', 'Done']
 
 function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
     const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [dueDate, setDueDate] = useState('')
     const [status, setStatus] = useState('To Do')
     const [submitting, setSubmitting] = useState(false)
 
@@ -18,9 +20,11 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
         if (!title.trim()) return
         
         setSubmitting(true)
-        const newTask = await createTask(title.trim(), status)
+        const newTask = await createTask(title.trim(), status, description.trim(), dueDate,)
         onTaskCreated(newTask)
         setTitle('')
+        setDescription('')
+        setDueDate('')
         setStatus('To Do')
         setSubmitting(false)
     }
@@ -33,6 +37,19 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Task title"
                 style={{ padding: '0.5rem', flex: 1 }}
+            />
+            <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description (optional)"
+                style={{ padding: '0.5rem', flex: 1 }}
+            />
+            <input
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                style={{ padding: '0.5rem' }}
             />
             <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ padding: '0.5rem' }}>
                 {STATUSES.map((s) => (
