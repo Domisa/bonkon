@@ -30,3 +30,15 @@ export async function fetchTasks(): Promise<Task[]> {
     }
     return data as Task[]
 }
+
+export async function updateTaskStatus(taskId: string, newStatus: string) {
+    const { error } = await supabase
+        .from('tasks')
+        .update({ status: newStatus })
+        .eq('id', taskId)
+    
+    if (error) {
+        console.error('Failed to update task status:', error.message)
+        throw error
+    }
+}
