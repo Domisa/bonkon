@@ -9,6 +9,7 @@ import AddTaskForm from './components/AddTaskForm'
 function App() {
   const [tasks, setTasks] =  useState<Task[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     async function init() {
@@ -40,6 +41,10 @@ function App() {
     setTasks((prev) => [...prev, newTask])
   }
 
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   if (loading) return <div>Loading...</div>
 
   return (
@@ -47,7 +52,14 @@ function App() {
       <div>
         <h1>Konbon Board</h1>
         <AddTaskForm onTaskCreated={handleTaskCreated} />
-        <Board tasks ={tasks} />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search tasks..."
+          style={{ padding: '0.5rem', marginBottom: '1rem', width: '100%' }}
+        />
+        <Board tasks ={filteredTasks} />
       </div>
     </DndContext>
   )
