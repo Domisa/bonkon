@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
-import { ensureGuestSession, fetchTasks } from './supabaseClient'
+import { DndContext } from '@dnd-kit/core'
+import type { DragEndEvent } from '@dnd-kit/core'
+import { ensureGuestSession, fetchTasks, updateTaskStatus } from './supabaseClient'
 import type { Task } from './types'
+import Board from './components/Board'
 
 function App() {
   const [tasks, setTasks] =  useState<Task[]>([])
@@ -8,7 +11,6 @@ function App() {
 
   useEffect(() => {
     async function init() {
-      console.log('init running')
       await ensureGuestSession()
       const data = await fetchTasks()
       setTasks(data)
@@ -17,14 +19,31 @@ function App() {
     init()
   }, [])
 
+  async function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+    if (!over) return 
+
+    const taskId = active.id as string
+    const newStatus = over.id as string
+    
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      )
+    )
+
+    await updateTaskStatus(taskId, newStatus)
+  }
 
   if (loading) return <div>Loading...</div>
 
   return (
-    <div>
-      <h1>Konbon Board</h1>
-      <pre>{JSON.stringify(tasks, null, 2)}</pre>
-    </div>
+    <DndContext onDragEnd={handleDragEnd}>
+      <div>
+        <h1>Konbon Board</h1>
+        <Board tasks ={tasks} />
+      </div>
+    </DndContext>
   )
 }
 
