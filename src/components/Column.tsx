@@ -18,9 +18,10 @@ function Column({ title, tasks }: ColumnProps) {
                 background: isOver ? '#e0e7ff' : '#f4f4f5',
                 padding: '1rem',
                 borderRadius: '8px',
+                color: '#1e1e1e'
             }}
         >
-            <h2>{title}</h2>
+            <h2 style={{ color: '#1e1e1e' }}>{title}</h2>
             {tasks.map((task) => (
                 <TaskCard key={task.id} task={task} />
             ))}
