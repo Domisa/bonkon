@@ -43,13 +43,23 @@ export async function updateTaskStatus(taskId: string, newStatus: string) {
     }
 }
 
-export async function createTask(title: string, status: string) {
+export async function createTask(
+    title: string, 
+    status: string,
+    description: string,
+    dueDate: string
+) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('No authenticated user')
 
         const { data, error } = await supabase
             .from('tasks')
-            .insert({ title, status, user_id: user.id })
+            .insert({ 
+                title, 
+                status,
+                description: description || null,
+                due_date: dueDate || null, 
+                user_id: user.id })
             .select()
             .single()
     
