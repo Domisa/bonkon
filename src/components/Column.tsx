@@ -6,6 +6,7 @@ interface ColumnProps {
 }
 
 function Column({ title, tasks }: ColumnProps) {
+    //temporary inline styling
     return (
         <div style={{ flex: 1, background: '#f4f45', padding: '1rem', borderRadius: '8px' }}>
             <h2>{title}</h2>
