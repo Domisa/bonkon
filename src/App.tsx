@@ -4,6 +4,7 @@ import type { DragEndEvent } from '@dnd-kit/core'
 import { ensureGuestSession, fetchTasks, updateTaskStatus } from './supabaseClient'
 import type { Task } from './types'
 import Board from './components/Board'
+import AddTaskForm from './components/AddTaskForm'
 
 function App() {
   const [tasks, setTasks] =  useState<Task[]>([])
@@ -35,12 +36,17 @@ function App() {
     await updateTaskStatus(taskId, newStatus)
   }
 
+  function handleTaskCreated(newTask: Task) {
+    setTasks((prev) => [...prev, newTask])
+  }
+
   if (loading) return <div>Loading...</div>
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div>
         <h1>Konbon Board</h1>
+        <AddTaskForm onTaskCreated={handleTaskCreated} />
         <Board tasks ={tasks} />
       </div>
     </DndContext>
