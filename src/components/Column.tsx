@@ -1,4 +1,6 @@
+import { useDroppable } from '@dnd-kit/core'
 import type { Task } from '../types'
+import TaskCard from './TaskCard'
 
 interface ColumnProps {
     title: string
@@ -6,15 +8,22 @@ interface ColumnProps {
 }
 
 function Column({ title, tasks }: ColumnProps) {
+    const { setNodeRef, isOver} = useDroppable({ id: title })
     //temporary inline styling
     return (
-        <div style={{ flex: 1, background: '#f4f45', padding: '1rem', borderRadius: '8px' }}>
+        <div
+            ref={setNodeRef}
+            style={{
+                flex: 1,
+                background: isOver ? '#e0e7ff' : '#f4f4f5',
+                padding: '1rem',
+                borderRadius: '8px',
+            }}
+        >
             <h2>{title}</h2>
             {tasks.map((task) => (
-                <div key ={task.id} style={{ background: 'white', padding: '0.75rem', marginBottom: '0.5rem', borderRadius: '6px' }}>
-                    {task.title}
-                </div>
-        ))}
+                <TaskCard key={task.id} task={task} />
+            ))}
         </div>
     )
 }
