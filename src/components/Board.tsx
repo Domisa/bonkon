@@ -4,7 +4,7 @@ import Column from './Column'
 interface BoardProps {
     tasks: Task[]
 }
-//temporary hard limit to the current columns. No customization just yet
+//temporary hard limit to the current columns. No customization just
 const DEFAULT_COLUMNS = ['To Do', 'In Progress', 'In Review', 'Done']
 
 function Board({ tasks }: BoardProps) {
