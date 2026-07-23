@@ -16,8 +16,11 @@ function TaskCard({ task }: TaskCardProps) {
         marginBottom: '0.5rem',
         borderRadius: '6px',
         cursor: 'grab',
+        touchAction: 'none',
+        userSelect: 'none' as const,
+        color: '#1e1e1e',
         ...(transform
-            ? {transform: 'translate(${transform.x}px, ${transform.y}px)' }
+            ? {transform: `translate(${transform.x}px, ${transform.y}px)` }
             : {}),
     }
 
