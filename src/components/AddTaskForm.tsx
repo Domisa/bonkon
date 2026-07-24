@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { createTask } from '../supabaseClient'
-import type { Task } from '../types'
+import type { Task, TeamMember } from '../types'
 
 interface AddTaskFormProps {
     onTaskCreated: (task: Task) => void
+    teamMembers: TeamMember[]
 }
 
 const STATUSES = ['To Do', 'In Progress', 'In Review', 'Done']
 
-function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
+function AddTaskForm({ onTaskCreated, teamMembers }: AddTaskFormProps) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [dueDate, setDueDate] = useState('')
     const [labelsInput, setLabelsInput] = useState('')
+    const [assigneeId, setAssigneeId] = useState('')
     const [status, setStatus] = useState('To Do')
     const [submitting, setSubmitting] = useState(false)
 
@@ -26,12 +28,20 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
             .map((l) => l.trim())
             .filter((l) => l.length > 0)
 
-        const newTask = await createTask(title.trim(), status, description.trim(), dueDate, labels)
+        const newTask = await createTask(
+            title.trim(), 
+            status, 
+            description.trim(), 
+            dueDate, 
+            labels,
+            assigneeId || null
+        )
         onTaskCreated(newTask)
         setTitle('')
         setDescription('')
         setDueDate('')
         setLabelsInput('')
+        setAssigneeId('')
         setStatus('To Do')
         setSubmitting(false)
     }
@@ -65,6 +75,13 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
                 placeholder="Labels (comma separated)"
                 style={{ padding: '0.5rem' }}
             />
+            <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)} style={{ padding: '0.5rem' }}>
+                <option value="">Unassigned</option>
+                {teamMembers.map((member) => (
+                    <option key={member.id} value={member.id}>{member.name}</option>
+                ))}
+            </select>
+
             <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ padding: '0.5rem' }}>
                 {STATUSES.map((s) => (
                     <option key={s} value={s}>{s}</option>
