@@ -12,6 +12,7 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [dueDate, setDueDate] = useState('')
+    const [labelsInput, setLabelsInput] = useState('')
     const [status, setStatus] = useState('To Do')
     const [submitting, setSubmitting] = useState(false)
 
@@ -20,11 +21,17 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
         if (!title.trim()) return
         
         setSubmitting(true)
-        const newTask = await createTask(title.trim(), status, description.trim(), dueDate,)
+        const labels = labelsInput
+            .split(',')
+            .map((l) => l.trim())
+            .filter((l) => l.length > 0)
+
+        const newTask = await createTask(title.trim(), status, description.trim(), dueDate, labels)
         onTaskCreated(newTask)
         setTitle('')
         setDescription('')
         setDueDate('')
+        setLabelsInput('')
         setStatus('To Do')
         setSubmitting(false)
     }
@@ -49,6 +56,13 @@ function AddTaskForm({ onTaskCreated }: AddTaskFormProps) {
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
+                style={{ padding: '0.5rem' }}
+            />
+            <input
+                type="text"
+                value={labelsInput}
+                onChange = {(e) => setLabelsInput(e.target.value)}
+                placeholder="Labels (comma separated)"
                 style={{ padding: '0.5rem' }}
             />
             <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ padding: '0.5rem' }}>

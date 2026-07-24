@@ -52,6 +52,29 @@ function TaskCard({ task }: TaskCardProps) {
                     {dueLabel.text}
                 </div>
             )}
+            {task.labels && task.labels.length > 0 && (
+                <div style ={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginTop: '0.35rem' }}>
+                    {task.labels.map((label) => (
+                        <span
+                            key={label}
+                            style={{
+                                background: '#e0e7ff',
+                                color: '#3730a3',
+                                fontSize: '0.7rem',
+                                padding: '0.1rem 0.5rem',
+                                borderRadius: '999px',
+                            }}
+                        >
+                            {label}
+                        </span>
+                    ))}
+                    </div>
+            )}
+            {dueLabel && (
+                <div style={{ fontSize: '0.75rem', color: dueLabel.color, marginTop: '0.25rem' }}>
+                    {dueLabel.text}
+                </div>
+            )}
             </div>
     )
 }

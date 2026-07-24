@@ -47,7 +47,8 @@ export async function createTask(
     title: string, 
     status: string,
     description: string,
-    dueDate: string
+    dueDate: string,
+    labels: string[]
 ) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('No authenticated user')
@@ -58,7 +59,8 @@ export async function createTask(
                 title, 
                 status,
                 description: description || null,
-                due_date: dueDate || null, 
+                due_date: dueDate || null,
+                labels,
                 user_id: user.id })
             .select()
             .single()
