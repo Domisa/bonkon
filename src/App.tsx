@@ -61,7 +61,7 @@ function App() {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div>
-        <h1>Konbon Board</h1>
+        <h1>BonKon Board</h1>
 
         <h2 style={{ fontSize: '1rem' }}>Team</h2>
         <AddTeamMemberForm onMemberCreated={handleMemberCreated} />
