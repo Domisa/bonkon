@@ -6,6 +6,7 @@ export interface Task {
     priority: string | null
     due_date: string | null
     assignee_id: string | null
+    labels: string[]
     user_id: string
     created_at: string
 }
