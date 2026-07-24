@@ -10,3 +10,11 @@ export interface Task {
     user_id: string
     created_at: string
 }
+
+export interface TeamMember {
+    id: string
+    name: string
+    avatar_color: string | null
+    user_id: string
+    created_at: string
+}
